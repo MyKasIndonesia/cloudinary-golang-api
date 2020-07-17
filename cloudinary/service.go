@@ -28,6 +28,7 @@ type ResourceType int
 
 const (
 	ImageType ResourceType = iota
+	VideoType
 )
 
 type Service struct {
@@ -83,7 +84,7 @@ func Dial(uri string) (*Service, error) {
 		uploadResType: ImageType,
 	}
 
-	up, err := url.Parse(fmt.Sprintf("%s/%s/image/upload", baseUploadUrl, s.cloudName))
+	up, err := url.Parse(fmt.Sprintf("%s/%s/auto/upload", baseUploadUrl, s.cloudName))
 	if err != nil {
 		return nil, err
 	}
@@ -207,6 +208,6 @@ func (s *Service) UploadFile(fullPath string, data io.Reader) (string, error) {
 	}
 }
 
-func (s *Service) Url(publicId string, namedTransformation string) string {
-	return fmt.Sprintf("http://%s-%s/image/upload/%s/%s.jpg", s.cloudName, baseResource, namedTransformation, publicId)
+func (s *Service) Url(resourceType, publicId, namedTransformation string) string {
+	return fmt.Sprintf("http://%s-%s/auto/upload/%s/%s.jpg", s.cloudName, baseResource, namedTransformation, publicId)
 }
